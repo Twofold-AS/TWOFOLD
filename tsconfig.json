@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@twofold/ui": ["packages/ui/src"],
+      "@twofold/blocks": ["packages/blocks/src"],
+      "@twofold/plugins-*": ["packages/plugins/*"]
+    },
+    "allowJs": false,
+    "checkJs": false,
+    "declaration": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true
+  },
+  "include": ["apps/**/*", "packages/**/*", "packages/plugins/**/*", "*.d.ts"]
+}
