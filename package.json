@@ -6,15 +6,10 @@
   "engines": {
     "node": ">=20"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "packages/plugins/*"
-  ],
   "scripts": {
     "dev": "pnpm -w -r --parallel dev",
     "build": "pnpm -w -r build",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "format": "prettier -w .",
     "test": "echo \"(no tests yet)\" && exit 0",
@@ -28,10 +23,14 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.0",
     "lint-staged": "^15.2.0",
     "prettier": "^3.2.5",
     "typescript": "^5.5.0"
-  }
+  },
+  "type": "module"
 }
