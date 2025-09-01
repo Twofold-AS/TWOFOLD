@@ -2,63 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design tokens (CSS variables) */
+/* Light/dark tokens (minimal; keep or replace with your own) */
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 47.4% 11.2%;
-
-  --primary: 240 5% 10%;
-  --primary-foreground: 0 0% 98%;
-
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 47.4% 11.2%;
-
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-
-  --radius-xl: 1.25rem;
-  --radius-lg: 0.75rem;
-  --radius-md: 0.5rem;
-
-  --shadow-soft: 0 6px 20px rgba(0,0,0,0.06);
-  --shadow-hard: 0 6px 16px rgba(0,0,0,0.18);
+  --background: #0b1220;
+  --foreground: #e6edf3;
+  --muted-foreground: #9aa4b2;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --ring: #7c3aed;
+  --border: rgba(255, 255, 255, 0.15);
+  --radius: 1rem;
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-  }
+html,
+body {
+  min-height: 100%;
 }
-
-html, body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-}
-
-/* Respecter reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Font fallbacks */
-body { font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }

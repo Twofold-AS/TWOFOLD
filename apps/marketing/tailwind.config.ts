@@ -1,36 +1,80 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
+  darkMode: ["class"],
   content: [
-    "./src/**/*.{ts,tsx}",
-    "../../packages/**/*.{ts,tsx}"
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "../../packages/blocks/src/**/*.{js,ts,jsx,tsx,mdx}",
+    "../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  theme: {
-    extend: {
-      fontFamily: { sans: ["var(--font-sans)"] },
-      colors: {
-        // tokens via CSS vars (se globals.css)
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: "hsl(var(--primary))",
-        primaryForeground: "hsl(var(--primary-foreground))",
-        muted: "hsl(var(--muted))",
-        mutedForeground: "hsl(var(--muted-foreground))",
-        card: "hsl(var(--card))",
-        cardForeground: "hsl(var(--card-foreground))",
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))"
-      },
-      borderRadius: {
-        xl: "var(--radius-xl)",
-        lg: "var(--radius-lg)",
-        md: "var(--radius-md)"
-      },
-      boxShadow: {
-        soft: "var(--shadow-soft)",
-        hard: "var(--shadow-hard)"
-      }
-    }
-  },
-  plugins: []
-} satisfies Config;
+  safelist: [
+    // Layout / spacing / grid
+    "w-full",
+    "py-16",
+    "md:py-24",
+    "mx-auto",
+    "max-w-6xl",
+    "px-4",
+    "md:px-6",
+    "grid",
+    "items-center",
+    "gap-8",
+    "md:gap-12",
+    "md:grid-cols-2",
+    "md:grid-cols-1",
+    "justify-items-center",
+    "place-content-center",
+    "place-content-end",
+    "text-center",
+    "justify-self-center",
+    "max-w-2xl",
+    // Typography
+    "mb-3",
+    "font-medium",
+    "tracking-wide",
+    "uppercase",
+    "text-3xl",
+    "md:text-5xl",
+    "font-semibold",
+    "leading-tight",
+    "mt-4",
+    "text-base",
+    "md:text-lg",
+    "leading-relaxed",
+    // CTAs
+    "mt-8",
+    "flex",
+    "gap-3",
+    "inline-flex",
+    "items-center",
+    "rounded-2xl",
+    "px-5",
+    "py-2.5",
+    "text-sm",
+    "shadow-sm",
+    "border",
+    // Positional helpers for background
+    "relative",
+    "absolute",
+    "inset-0",
+    "h-full",
+    "block",
+    "h-auto",
+    "min-h-[60vh]",
+    // Tokens (arbitrary value utilities)
+    "bg-[var(--background)]",
+    "text-[var(--foreground)]",
+    "text-[color:var(--muted-foreground)]",
+    "bg-[var(--primary)]",
+    "text-[var(--primary-foreground)]",
+    "focus:outline-none",
+    "focus-visible:ring-2",
+    "focus-visible:ring-[var(--ring)]",
+    "border-[color:var(--border)]",
+    "rounded-[var(--radius)]",
+    "shadow-[var(--shadow-md,0_4px_24px_rgba(0,0,0,0.08))]",
+  ],
+  theme: { extend: {} },
+  plugins: [],
+};
+export default config;
