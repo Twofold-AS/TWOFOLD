@@ -6,8 +6,8 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 
 /**
  * Hero block — typed props + Zod schema + Motion preset
- * - Tailwind utilities for tokens/spacing
- * - Inline-style fallbacks so align/vAlign work even if Tailwind isn’t picked up
+ * - Tailwind utilities + inline fallbacks
+ * - imagePlacement for inline layout: "left" | "right" | "top" | "bottom"
  */
 
 const HeroSchemaCore = z.object({
@@ -27,20 +27,19 @@ const HeroSchemaCore = z.object({
       width: z.number().int().positive().optional(),
       height: z.number().int().positive().optional(),
       fit: z.enum(["cover", "contain", "fill"]).optional(),
-      position: z.enum(["left", "center", "right", "top", "bottom"]).optional(),
-      asBackground: z.boolean().optional(),
+      position: z.enum(["left", "center", "right", "top", "bottom"]).optional(), // object-position (crop)
+      asBackground: z.boolean().optional(), // full-bleed background behind content
     })
     .optional(),
-  align: z.enum(["left", "center"]).default("left"),
-  vAlign: z.enum(["top", "center", "bottom"]).default("top"),
+  align: z.enum(["left", "center"]).default("left"), // text horizontal align
+  vAlign: z.enum(["top", "center", "bottom"]).default("top"), // vertical alignment of content area
+  // NEW: where the inline image sits relative to text (ignored when asBackground=true)
+  imagePlacement: z.enum(["left", "right", "top", "bottom"]).default("right"),
 });
 
 const HeroLegacySchema = z.object({
-  /** @deprecated use `description` */
   subtitle: z.string().optional(),
-  /** @deprecated use `primaryCta={{label, href}}` */
   ctaLabel: z.string().optional(),
-  /** @deprecated use `primaryCta={{label, href}}` */
   ctaHref: z.string().optional(),
 });
 
@@ -69,7 +68,7 @@ export function Hero(rawProps: HeroProps) {
     image,
     align = "left",
     vAlign = "top",
-    // legacy
+    imagePlacement: imagePlacementRaw = "right",
     subtitle,
     ctaLabel,
     ctaHref,
@@ -85,7 +84,7 @@ export function Hero(rawProps: HeroProps) {
   const isCenter = align === "center";
   const asBackground = !!image?.asBackground;
 
-  // Image behavior
+  // Image crop behavior
   const fit = image?.fit ?? "cover";
   const fitClass =
     fit === "contain" ? "object-contain" : fit === "fill" ? "object-fill" : "object-cover";
@@ -101,16 +100,67 @@ export function Hero(rawProps: HeroProps) {
             ? "center bottom"
             : "center";
 
-  // Inline-style fallbacks (work even if Tailwind isn’t applied)
+  // Placement (only for inline mode)
+  const placement = asBackground ? undefined : imagePlacementRaw; // ignore when bg
+  const twoCols = !!image && !asBackground && (placement === "left" || placement === "right");
+
+  // Tailwind order classes + inline fallbacks (for when Tailwind is off)
+  const contentOrderClass =
+    placement === "top"
+      ? "order-2"
+      : placement === "bottom"
+        ? "order-1"
+        : placement === "left"
+          ? "md:order-2"
+          : placement === "right"
+            ? "md:order-1"
+            : "";
+  const imageOrderClass =
+    placement === "top"
+      ? "order-1"
+      : placement === "bottom"
+        ? "order-2"
+        : placement === "left"
+          ? "md:order-1"
+          : placement === "right"
+            ? "md:order-2"
+            : "";
+
+  // Inline fallbacks
+  const contentOrderStyle: React.CSSProperties =
+    placement === "top" ? { order: 2 } : placement === "bottom" ? { order: 1 } : {}; // left/right handled at md: via classes
+  const imageOrderStyle: React.CSSProperties =
+    placement === "top" ? { order: 1 } : placement === "bottom" ? { order: 2 } : {};
+
+  // Vertical alignment fallbacks for the grid wrapper
   const wrapperGridStyle: React.CSSProperties = {
     justifyItems: isCenter ? "center" : undefined,
     placeContent: vAlign === "center" ? "center" : vAlign === "bottom" ? "end" : undefined,
     minHeight: asBackground ? "60vh" : undefined,
   };
+
+  const contentContainerStyle: React.CSSProperties = {
+    position: "relative",
+    zIndex: 1,
+  };
+
+  const bgImgStyle: React.CSSProperties = {
+    objectPosition,
+    zIndex: 0,
+    pointerEvents: "none",
+  };
+
   const textBoxStyle: React.CSSProperties = {
     textAlign: isCenter ? "center" : undefined,
     justifySelf: isCenter ? "center" : undefined,
-    maxWidth: isCenter ? "42rem" : undefined, // ~max-w-2xl
+    maxWidth: isCenter ? "42rem" : undefined,
+  };
+
+  const inlineImgStyle: React.CSSProperties = {
+    objectPosition,
+    width: "100%",
+    height: "auto",
+    maxWidth: "100%",
   };
 
   return (
@@ -122,6 +172,7 @@ export function Hero(rawProps: HeroProps) {
         asBackground && "relative overflow-hidden",
       )}
       aria-label="Hero"
+      style={{ position: "relative" }}
     >
       {/* Background / cover */}
       {asBackground && image && (
@@ -129,7 +180,7 @@ export function Hero(rawProps: HeroProps) {
           src={image.src}
           alt={image.alt ?? ""}
           className={cx("absolute inset-0 w-full h-full", fitClass)}
-          style={{ objectPosition }}
+          style={bgImgStyle}
           loading="lazy"
           decoding="async"
           aria-hidden={image.alt === "" ? "true" : undefined}
@@ -138,11 +189,16 @@ export function Hero(rawProps: HeroProps) {
 
       <div
         className={cx("relative", "mx-auto", "max-w-6xl", "px-4 md:px-6", asBackground && "z-10")}
+        style={contentContainerStyle}
       >
         <div
           className={cx(
             "grid items-center gap-8 md:gap-12",
-            image && !asBackground ? "md:grid-cols-2" : "md:grid-cols-1",
+            image && !asBackground
+              ? twoCols
+                ? "md:grid-cols-2"
+                : "md:grid-cols-1"
+              : "md:grid-cols-1",
             isCenter && "justify-items-center",
             vAlign === "center"
               ? "place-content-center"
@@ -152,13 +208,17 @@ export function Hero(rawProps: HeroProps) {
           )}
           style={wrapperGridStyle}
         >
+          {/* Copy */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-10% 0px" }}
             variants={variants}
-            className={cx(isCenter && "text-center justify-self-center mx-auto max-w-2xl")}
-            style={textBoxStyle}
+            className={cx(
+              contentOrderClass,
+              isCenter && "text-center justify-self-center mx-auto max-w-2xl",
+            )}
+            style={textBoxStyle ? { ...textBoxStyle, ...contentOrderStyle } : contentOrderStyle}
           >
             {eyebrow && (
               <p
@@ -222,15 +282,20 @@ export function Hero(rawProps: HeroProps) {
             )}
           </motion.div>
 
-          {/* Inline, side-by-side image */}
+          {/* Inline image */}
           {!asBackground && image && (
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-10% 0px" }}
               variants={variants}
-              className={cx("relative", "w-full", isCenter && "justify-self-center")}
-              style={{ justifySelf: isCenter ? "center" : undefined }}
+              className={cx(
+                "relative",
+                "w-full",
+                imageOrderClass,
+                isCenter && "justify-self-center",
+              )}
+              style={{ ...imageOrderStyle, justifySelf: isCenter ? "center" : undefined }}
             >
               <img
                 src={image.src}
@@ -243,7 +308,7 @@ export function Hero(rawProps: HeroProps) {
                   "rounded-[var(--radius)]",
                   "shadow-[var(--shadow-md,0_4px_24px_rgba(0,0,0,0.08))]",
                 )}
-                style={{ objectPosition, width: "100%", height: "auto" }} // fallback so it isn’t 100x100
+                style={inlineImgStyle}
                 loading="lazy"
                 decoding="async"
               />
