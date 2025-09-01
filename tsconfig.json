@@ -10,6 +10,7 @@
       "@twofold/blocks": ["packages/blocks/src"],
       "@twofold/plugins-*": ["packages/plugins/*"]
     },
+    "react-jsx": "preserve",
     "allowJs": false,
     "checkJs": false,
     "declaration": false,

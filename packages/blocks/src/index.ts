@@ -1,1 +1,1 @@
-// export * from './Hero'
+export { Hero, type HeroProps } from "./Hero";

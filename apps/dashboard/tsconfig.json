@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../../",
+    "paths": {
+      "@/*": [
+        "apps/dashboard/src/*"
+      ],
+      "@twofold/ui": [
+        "packages/ui/src"
+      ],
+      "@twofold/blocks": [
+        "packages/blocks/src"
+      ],
+      "@twofold/plugins-*": [
+        "packages/plugins/*"
+      ]
+    },
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
