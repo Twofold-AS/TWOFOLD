@@ -1,1 +1,1 @@
-export { Hero, type HeroProps } from "./Hero";
+export { Hero, type HeroProps, HeroSchema, heroRevealPreset } from "./Hero";
