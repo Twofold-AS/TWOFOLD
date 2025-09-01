@@ -1,2 +1,5 @@
-export { Button } from './Button';
-export { Hero } from './Hero';
+export { Button } from "./Button";
+export { Card, CardHeader, CardContent } from "./Card";
+export { Badge } from "./Badge";
+export { Input } from "./Input";
+export { Dialog } from "./Dialog";

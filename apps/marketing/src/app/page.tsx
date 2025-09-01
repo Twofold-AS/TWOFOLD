@@ -1,4 +1,4 @@
-import { Hero } from "@blocks";
+import { Hero } from "@twofold/blocks";
 
 export default function Page() {
   return (

@@ -60,6 +60,12 @@ importers:
 
   apps/dashboard:
     dependencies:
+      '@twofold/blocks':
+        specifier: workspace:^
+        version: link:../../packages/blocks
+      '@twofold/ui':
+        specifier: workspace:^
+        version: link:../../packages/ui
       next:
         specifier: 15.5.2
         version: 15.5.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -100,6 +106,12 @@ importers:
 
   apps/marketing:
     dependencies:
+      '@twofold/blocks':
+        specifier: workspace:^
+        version: link:../../packages/blocks
+      '@twofold/ui':
+        specifier: workspace:^
+        version: link:../../packages/ui
       next:
         specifier: 15.5.2
         version: 15.5.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)

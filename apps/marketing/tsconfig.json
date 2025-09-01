@@ -3,33 +3,19 @@
   "compilerOptions": {
     "baseUrl": "../../",
     "paths": {
-      "@/*": [
-        "apps/marketing/src/*"
-      ],
-      "@twofold/ui": [
-        "packages/ui/src"
-      ],
-      "@twofold/blocks": [
-        "packages/blocks/src"
-      ],
-      "@twofold/plugins-*": [
-        "packages/plugins/*"
-      ]
+      "@/*": ["apps/marketing/src/*"],
+      "@twofold/ui": ["packages/ui/src"],
+      "@twofold/blocks": ["packages/blocks/src"],
+      "@twofold/plugins-*": ["packages/plugins/*"]
     },
     "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "jsx": "preserve"
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "next-env.d.ts",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
